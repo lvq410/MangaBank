@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>漫吧</title>
+    <link href="plugins/mui/css/mui.min.css" rel="stylesheet" />
+    <link href="plugins/mui/css/iconfont.css" rel="stylesheet" />
+    <style>
+    </style>
+</head>
+<body style="max-width:1024px;">
+<div class="mui-off-canvas-wrap mui-draggable">
+    <!--左侧标签选择-->
+    <aside id="leftMenu" class="mui-off-canvas-left">
+        <div class="mui-iframe-wrapper" style="top: 0px; bottom: 0px;">
+            <iframe src="index-tags.html"></iframe>
+        </div>
+    </aside>
+    <div class="mui-inner-wrap">
+    
+        <!--顶部标题-->
+        <header class="mui-bar mui-bar-nav">
+            <a href="#leftMenu" class="mui-btn-link mui-pull-left">&lt;标签</a>
+            <a href="#popMenu" class="mui-icon mui-icon-more mui-pull-right"></a>
+            <div class="mui-title" style="left:60px;">
+                <div class="mui-input-row">
+                    <input id="q" onkeyup="onQInput()" class="t-i" type="text" class="mui-input-clear" placeholder="搜索标题" style="border:none;background-color:transparent;margin-bottom: 0;border-bottom: rgba(0, 0, 0, 0.29) solid 1px;padding-bottom: 0;">
+                    <span id='qClearBtn' class="mui-icon mui-icon-clear mui-hidden" style="right:30px;color:rgba(0, 0, 0, 0.29);"></span>
+                </div>
+            </div>
+        </header>
+        
+        <!--本子列表-->
+        <div id="bookListContainer" class="mui-content mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <ul id="bookList" class="mui-table-view"></ul>
+            </div>
+        </div>
+        
+        <!-- off-canvas backdrop -->
+        <div class="mui-off-canvas-backdrop"></div>
+    </div>
+</div>
+
+<!--弹出菜单-->
+<div id="popMenu" class="mui-popover" style="width:14rem">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-checkbox mui-left">
+            <input id="qOnlyFavor" onchange="onQOnlyFavor()" type="checkbox"/>仅看收藏的本子
+        </li>
+    </ul>
+</div>
+
+</body>
+
+<script src="plugins/mui/js/mui.min.js"></script>
+<script src="plugins/jquery/jquery.js"></script>
+<script src="plugins/lvt4js/lvt4js.js"></script>
+<script src="plugins/jstpl/jstpl-2.0.1.min.js"></script>
+<script src="common.js"></script>
+<script src="index.js"></script>
+
+</html>

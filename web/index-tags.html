@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>漫吧</title>
+    <link href="plugins/mui/css/mui.min.css" rel="stylesheet" />
+    <link href="plugins/mui/css/iconfont.css" rel="stylesheet" />
+    <style>
+    .mui-search.mui-active:before{
+        top: 70%;
+        background-color: transparent;
+    }
+    </style>
+</head>
+<body>
+<div class="mui-input-row mui-search" style="background:white;">
+    <input id="tagQ" onkeyup="onTagQInput()" type="search" class="mui-input-clear" placeholder="搜索标签" style="margin-bottom:0;">
+    <span id='tagQClearBtn' class="mui-icon mui-icon-clear mui-hidden" style="right:30px;color:rgba(0, 0, 0, 0.29);"></span>
+</div>
+<div id=tagsContainer class="mui-content mui-scroll-wrapper" style="top:35px">
+    <div class="mui-scroll">
+        <!--数据列表-->
+        <ul id="tagsUl" class="mui-table-view mui-table-view-chevron"></ul>
+    </div>
+</div>
+
+</body>
+
+<script src="plugins/mui/js/mui.min.js"></script>
+<script src="plugins/jquery/jquery.js"></script>
+<script src="plugins/lvt4js/lvt4js.js"></script>
+<script src="plugins/jstpl/jstpl-2.0.1.min.js"></script>
+<script src="common.js"></script>
+<script src="index-tags.js"></script>
+
+</html>

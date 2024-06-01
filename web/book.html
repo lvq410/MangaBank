@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>漫吧</title>
+    <link href="plugins/mui/css/mui.min.css" rel="stylesheet" />
+    <link href="plugins/mui/css/iconfont.css" rel="stylesheet" />
+</head>
+
+<body style="max-width:1024px;">
+
+<header class="mui-bar mui-bar-nav">
+    <a href="#popMenu" class="mui-icon mui-icon-more mui-pull-right"></a>
+    <h1 id="title" class="mui-title"></h1>
+</header>
+
+<!--基本信息-->
+<div class="mui-content">
+   <table style="background-color:white;width:100%">
+       <colgroup><col width="100px"><col></colgroup>
+	   <tbody><tr>
+          <td style="padding:10px;">
+              <img id="cover" style="width:100px;max-width:100px"/>
+          </td>
+          <td style="vertical-align:top;padding:10px 10px 10px 0;">
+	          <ul id="titles" class="mui-table-view"></ul>
+              <div id="tags" style="margin:5px 0 0 0;">tag</div>
+          </td>
+       </tr></tbody>
+   </table>
+   
+   <ul id="child" class="mui-table-view" style="margin-top: 1px;"></ul>
+   
+   <div id="imgs"></div>
+</div>
+
+<!--弹出菜单-->
+<div id="popMenu" class="mui-popover" style="width:8rem">
+    <ul class="mui-table-view ">
+        <li class="mui-table-view-cell mui-radio mui-left">
+            <input name="resolution" type="radio" value="SD"/>标清
+        </li>
+        <li class="mui-table-view-cell mui-radio mui-left">
+            <input name="resolution" type="radio" value="HD"/>高清
+        </li>
+        <li class="mui-table-view-cell mui-radio mui-left">
+            <input name="resolution" type="radio" value="UHD"/>超清
+        </li>
+        <li class="mui-table-view-cell mui-radio mui-left">
+            <input name="resolution" type="radio" value="Orig"/>原画
+        </li>
+        <li class="mui-table-view-cell mui-radio mui-left">
+            <input name="resolution" type="radio" value="OrigRaw"/>纯原画
+        </li>
+    </ul>
+</div>
+
+</body>
+
+<script src="plugins/mui/js/mui.min.js"></script>
+<script src="plugins/jquery/jquery.js"></script>
+<script src="plugins/lvt4js/lvt4js.js"></script>
+<script src="plugins/jstpl/jstpl-2.0.1.min.js"></script>
+<script src="common.js"></script>
+<script src="book.js"></script>
+
+</html>

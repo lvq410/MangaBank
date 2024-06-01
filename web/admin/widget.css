@@ -1,0 +1,83 @@
+.ui-tooltip{
+    background: #fff !important;
+    color: #333 !important;
+    max-width: none !important;
+}
+.ui-tooltip-content{
+    overflow: hidden !important;
+}
+
+.ui-datepicker{
+    width: auto !important;
+}
+
+.tooltip-msg{
+    display:none;
+}
+
+.sortabler-handler{
+    text-align: center !important;
+    vertical-align: middle !important;
+    cursor: move !important;
+}
+
+.widget-header .select2-container--default .select2-selection--single{
+    margin-top: -3px;
+}
+.flex-flex1 .select2-container--default .select2-selection--single{
+    margin-top: 0;
+}
+.input-group .select2-container--default .select2-selection--single{
+    margin-top: 0;
+}
+.select2-container--default .select2-selection--single{
+    border-radius: 0;
+    height: 34px;
+    margin-top: -3px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height: 32px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered{
+    line-height: 22px;
+}
+.select2-search:after{
+    display:none;
+}
+.select2-selection--multiple{
+    border-radius: 0 !important;
+}
+#subjectSelect .select2-selection--multiple {
+    max-height: 22px;
+    overflow-y: auto !important;
+}
+.pager{
+    color: #2283c5;
+    margin: 10px 0;
+    text-align: left;
+    display: inline-block;
+}
+.pager .pager-ele:first-child{
+    margin: 0;
+}
+.pager-ele{
+    display: inline;
+    padding: 5px 14px;
+    border: 1px solid #d4dfe3;
+    float: left;
+    margin-left: -1px;
+}
+.pager .pager-ele:last-child{
+    margin-left: -1px;
+}
+.pager-btn{
+    cursor: pointer;
+}
+.pager-btn:hover{
+    background-color: #eaeff2;
+}
+.pager .input{
+    display: inline-block;
+    min-width: 15px;
+    text-align: center;
+}

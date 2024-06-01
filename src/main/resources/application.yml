@@ -1,0 +1,43 @@
+server.port: 8080
+#server.servlet.context-path: /comicbank
+management:
+  server.port: 8081
+  endpoints:
+    enabled-by-default: true
+    web.exposure.include: "*"
+  endpoint.health.show-details: never
+  health:
+    defaults.enabled: false
+    db.enabled: false
+  info.git.mode: full
+
+
+spring:
+  main:
+    banner-mode: "OFF"
+  application.name: ComicBank
+  boot.admin.client:
+    enabled: false
+    url: http://localhost:25020
+    instance.prefer-ip: true
+    auto-deregistration: true
+
+logging:
+  file: logs/comicbank.log
+  file.max-history: 30
+  level:
+    root: info
+    com.lvt4j.mangabank: debug
+
+tmp.dir: tmp
+
+data.dir: data
+
+book.dir: ${data.dir}/book
+meta.dir: ${data.dir}/meta
+
+lucene.id.dir: ${meta.dir}/id
+lucene.book.dir: ${meta.dir}/book
+lucene.user.dir: ${meta.dir}/user
+lucene.tag.dir: ${meta.dir}/tag
+lucene.imgCache.dir: ${meta.dir}/imgCache
