@@ -38,6 +38,7 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.lvt4j.mangabank.dao.BookDao;
 import com.lvt4j.mangabank.dao.TagDao;
 import com.lvt4j.mangabank.dto.NumberPath;
@@ -50,6 +51,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @ManagedResource(objectName = "!Service:name=SyncService")
 public class SyncService{
+    
+    public static final Set<String> IgnoreFolderNames = ImmutableSet.of("@eaDir");
     
     @Value("${book.dir}")
     private String bookDir;
@@ -99,7 +102,14 @@ public class SyncService{
         List<Book> books = bookDao.search(Book.Query.builder().pathPrefixes(rootPaths).build(), null, 1, Integer.MAX_VALUE).getRight();
         for(Book book: books){
             File bookFile = new File(bookFolder, book.path);
-            if(bookFile.exists()) continue;
+            if(bookFile.exists()) {
+                if(bookFile.isDirectory() && IgnoreFolderNames.contains(bookFile.getName())) {
+                    log.info("book文件需要忽略，清理：{}", book.path);
+                    bookDao.delete(book.path);
+                    continue;
+                }
+                continue;
+            }
             log.info("book文件不存在，清理：{}", book.path);
             bookDao.delete(book.path);
         }
@@ -109,6 +119,7 @@ public class SyncService{
         if(FileService.isCompressFile(file)) {
             syncFileVol(file);
         }else if(file.isDirectory()){
+            if(IgnoreFolderNames.contains(file.getName())) return;
             for(File subFile: file.listFiles()){
                 sync(subFile);
             }
