@@ -1,22 +1,26 @@
 var QueryTagIds = Tjson(localStorage.getItem('QueryTagIds') || '[]');
-var PageNo=1, PageSize=Tint(window.innerHeight/42);
+var PageNo=1, PageSize=10;
 
-mui.init({
-    pullRefresh : {
-        container:'#tagsContainer',
-        up : {
-            auto: true,
-            height: 10,
-            contentrefresh : "正在加载...",
-            contentnomore:'没有更多数据了',
-            callback : tagQuery
+$(function() {
+    PageSize = Math.max(PageSize, Math.ceil(window.innerHeight/42));
+    mui.init({
+        pullRefresh : {
+            container:'#tagsContainer',
+            up : {
+                auto: true,
+                height: 10,
+                contentrefresh : "正在加载...",
+                contentnomore:'没有更多数据了',
+                callback : tagQuery
+            }
         }
-    }
+    });
+    
+    mui('.mui-search').on('tap', '#tagQClearBtn', onTagQClear);
+    
+    mui('.mui-scroll-wrapper').scroll();
 });
 
-mui('.mui-search').on('tap', '#tagQClearBtn', onTagQClear);
-
-mui('.mui-scroll-wrapper').scroll();
 
 function onTagQInput(){
     delayCall(()=>tagQuery(1), 500);

@@ -57,7 +57,10 @@ public class AdminFilter extends FilterRegistrationBean<AdminFilter> implements 
         }
         
         if(user==null){
-            if(httpRequest.getRequestURI().endsWith(".html")) {
+            if(httpRequest.getRequestURI().endsWith(".html")||
+                httpRequest.getRequestURI().endsWith("admin")||
+                httpRequest.getRequestURI().endsWith("admin/")||
+                httpRequest.getRequestURI().endsWith("admin/index")) {
                 String redirect = httpRequest.getRequestURI();
                 if(StringUtils.isNotBlank(httpRequest.getContextPath())) redirect = redirect.substring(httpRequest.getContextPath().length());
                 redirect = StringUtils.stripStart(redirect, "/");

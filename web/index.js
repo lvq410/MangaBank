@@ -11,9 +11,11 @@ rget('login', null, null, function(isLogin){
     });
 }, '检查登录中')
 
-var PageNo=1, PageSize=Tint(window.innerHeight/62);
+var PageNo=1, PageSize=10;
 
 function init(){
+    PageSize = Math.max(PageSize, Math.ceil(window.innerHeight/62));
+    
     mui.init({
         pullRefresh : {
             container:'#bookListContainer',
