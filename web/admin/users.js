@@ -31,6 +31,15 @@ function setAdmin(btn){
     });
 }
 
+function del(btn) {
+    var user = $(btn).closest('tr').attrData();
+    if(!confirm('确定删除用户' + user.id + '吗？')) return;
+    rdel('user',{id:user.id}, null, function() {
+        alert('删除成功');
+        loadUser();
+    }, '删除中');
+}
+
 var tpl_users = $tpl(function(users){
     users.forEach((user)=>{
         var favorBooks = user.favorBooks||{};
@@ -41,6 +50,9 @@ var tpl_users = $tpl(function(users){
             <td>
                 {user.admin?'是':'否'}
                 <button type="button" class="btn btn-primary btn-minier" onclick="setAdmin(this)">设置</button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-minier" onclick="del(this)">删除</button>
             </td>
         </tr>*/
     });

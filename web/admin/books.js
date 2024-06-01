@@ -49,6 +49,28 @@ function delTag(btn){
     }, '删除标签中');
 }
 
+function sync(btn){
+    if(btn){
+        var book = $(btn).closest('tr').attrData();
+        $('#syncDialog [name=rootPaths]').val(book.path);
+    }
+    
+    $('#syncDialog').dialog({
+        title: '同步本子',
+        width: 1000,
+        buttons: {
+            '确定': function() {
+                var rootPaths = $('#syncDialog [name=rootPaths]').val().split('\n').filter((path)=>path);
+                rpost('book/sync', null, rootPaths, function() {
+                    alert('同步成功');
+                    $('#syncDialog').dialog('close');
+                    loadBook();
+                }, '同步本子中');
+            }
+        }
+    });
+}
+
 var tpl_books = $tpl(function(books){
     books.forEach((book)=>{
         /*<tr data="{Tigh(book)}">
@@ -65,6 +87,9 @@ var tpl_books = $tpl(function(books){
             <td>{book.favor}</td>
             <td>{TtimestampFormat(book.createTime)}</td>
             <td>{TtimestampFormat(book.updateTime)}</td>
+            <td>
+                <button type="button" class="btn btn-info btn-minier" onclick="sync(this)">手动同步</button>
+            </td>
         </tr>*/
     });
 })

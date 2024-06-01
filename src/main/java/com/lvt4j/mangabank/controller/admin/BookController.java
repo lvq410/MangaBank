@@ -25,6 +25,7 @@ import com.lvt4j.mangabank.dao.TagDao;
 import com.lvt4j.mangabank.po.Book;
 import com.lvt4j.mangabank.po.Tag;
 import com.lvt4j.mangabank.service.FileService;
+import com.lvt4j.mangabank.service.SyncService;
 
 import lombok.Data;
 
@@ -42,8 +43,22 @@ class BookController {
     private TagDao tagDao;
     
     @Autowired
+    private SyncService syncService;
+    @Autowired
     private FileService fileService;
 
+    /**
+     * 执行
+     * @param rootPaths
+     * @return
+     */
+    @PostMapping("sync")
+    public boolean sync(
+            @RequestBody Set<String> rootPaths) throws IOException {
+        syncService.syncRootPaths(rootPaths);
+        return true;
+    }
+    
     @PostMapping("list")
     public Map<String, Object> list(
             @RequestParam(defaultValue="1") int pageNo,

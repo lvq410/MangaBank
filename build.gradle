@@ -95,7 +95,4 @@ dependencies {
     
     api 'org.springframework.boot:spring-boot-starter-web'
     api 'org.springframework.boot:spring-boot-starter-actuator'
-    
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'org.xerial:sqlite-jdbc:3.8.7'
 }

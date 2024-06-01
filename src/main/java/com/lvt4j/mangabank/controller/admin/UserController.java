@@ -52,6 +52,9 @@ class UserController {
     @DeleteMapping
     public boolean delete(
             @RequestParam String id) throws IOException {
+        int otherAdminNum = dao.count(User.Query.builder().idNot(id).admin(true).build());
+        if(otherAdminNum==0) throw new RuntimeException("禁止删除：至少要保留一个管理员");
+        
         dao.delete(id);
         return true;
     }

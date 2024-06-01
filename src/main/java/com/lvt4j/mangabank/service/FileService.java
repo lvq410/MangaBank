@@ -54,7 +54,6 @@ import com.google.common.collect.ImmutableSet;
 import com.lvt4j.mangabank.dao.BookDao;
 import com.lvt4j.mangabank.dao.ImgCacheDao;
 import com.lvt4j.mangabank.dto.NumberPath;
-import com.lvt4j.mangabank.po.Book;
 import com.lvt4j.mangabank.po.ImgCache;
 
 import lombok.Cleanup;
@@ -248,22 +247,8 @@ public class FileService{
             log.debug("清理图片缓存");
             imgCacheDao.delete(ImgCache.Query.builder().pathPrefixes(rootPaths).build());
             
-            //rootPath文件仍存在的，重新执行rootPath的导入
-            for(String rootPath: rootPaths){
-                File rootFile = new File(bookFolder, rootPath);
-                if(!rootFile.exists()) continue;
-                log.info("重新导入book目录下：{}", rootPath);
-                syncService.sync(rootFile);
-            }
-            
-            //清理rootPath前缀，但path对应文件已不存在的book
-            List<Book> books = bookDao.search(Book.Query.builder().pathPrefixes(rootPaths).build(), null, 1, Integer.MAX_VALUE).getRight();
-            for(Book book: books){
-                File bookFile = new File(bookFolder, book.path);
-                if(bookFile.exists()) continue;
-                log.info("book文件不存在，清理：{}", book.path);
-                bookDao.delete(book.path);
-            }
+            //重新执行rootPaths的导入
+            syncService.syncRootPaths(rootPaths);
         }
     }
     

@@ -157,7 +157,7 @@ public class Book {
                 pathPrefixQuery.setMinimumNumberShouldMatch(1);
                 query.add(pathPrefixQuery.build(), Occur.MUST);
             }
-            if(CollectionUtils.isNotEmpty(pathContains)) {
+            if(pathContains!=null) {
                 BooleanQuery.Builder pathContainQuery = new BooleanQuery.Builder();
                 for(String pathContain : pathContains) pathContainQuery.add(new TermQuery(new Term("path", pathContain)), Occur.SHOULD);
                 pathContainQuery.setMinimumNumberShouldMatch(1);

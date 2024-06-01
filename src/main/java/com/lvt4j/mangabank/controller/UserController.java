@@ -35,7 +35,7 @@ public class UserController {
     public boolean dologin(HttpSession session,
             @NotBlank
             @RequestParam String id,
-            @Size(min=6,max=18)
+            @Size(min=5,max=18)
             @RequestParam String pwd) throws IOException {
         User user = dao.get(id);
         if(user==null) return false;
@@ -52,7 +52,7 @@ public class UserController {
     public boolean register(HttpSession session,
             @NotBlank
             @RequestParam String id,
-            @Size(min=6,max=18)
+            @Size(min=5,max=18)
             @RequestParam String pwd) throws IOException {
         dao.register(id, MangaBankAPP.md5(pwd));
         
@@ -63,8 +63,11 @@ public class UserController {
     
     @ResponseBody
     @GetMapping("login")
-    public boolean isLogin(HttpSession session){
-        return session.getAttribute("UserId")!=null;
+    public boolean isLogin(HttpSession session) throws IOException {
+        String id = (String) session.getAttribute("UserId");
+        if(id==null) return false;
+        User user = dao.get(id);
+        return user!=null;
     }
     
 }

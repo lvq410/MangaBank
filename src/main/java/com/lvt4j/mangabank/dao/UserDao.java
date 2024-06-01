@@ -1,5 +1,6 @@
 package com.lvt4j.mangabank.dao;
 
+import static com.lvt4j.mangabank.MangaBankAPP.md5;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 import java.io.IOException;
@@ -13,9 +14,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +38,13 @@ import com.google.common.collect.ImmutableSet;
 import com.lvt4j.mangabank.po.User;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author LV on 2023年11月21日
  */
+@Slf4j
 @Component
 @ManagedResource(objectName="!Dao:type=UserDao")
 public class UserDao extends AbstractLuceneDao {
@@ -64,6 +70,15 @@ public class UserDao extends AbstractLuceneDao {
                 return Optional.ofNullable(get(id));
             }
     });
+    
+    @PostConstruct
+    private void init() throws IOException {
+        if(searcher.count(new MatchAllDocsQuery())==0) {
+            log.info("用户数据为空，初始化admin用户，账密皆为：admin");
+            register("admin", md5("admin"));
+            setAdmin("admin", true);
+        }
+    }
     
     public User get(String id) throws IOException {
         if(StringUtils.isBlank(id)) return null;

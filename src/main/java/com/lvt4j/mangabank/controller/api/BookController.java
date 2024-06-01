@@ -2,11 +2,13 @@ package com.lvt4j.mangabank.controller.api;
 
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -54,13 +56,14 @@ class BookController {
             @SessionAttribute("UserId") String userId,
             @RequestBody Query query) throws Exception {
         User user = userDao.get(userId);
-        if(user==null) throw new ResponseStatusException(NOT_FOUND, "未登录");
+        if(user==null) throw new ResponseStatusException(UNAUTHORIZED, "未登录");
+        Map<String, Date> favorBooks = defaultIfNull(user.favorBooks, emptyMap());
         
         Book.Query bookQuery = new Book.Query();
         bookQuery.titlePhrase = query.q;
         bookQuery.tags = query.tags;
         bookQuery.root = true;
-        if(query.onlyFavor) bookQuery.pathContains = user.favorBooks.keySet();
+        if(query.onlyFavor) bookQuery.pathContains = favorBooks.keySet();
         
         Pair<Long, List<Book>> searched = dao.search(bookQuery, Book.Query.FavorDescUpdateDesc, query.pageNo, query.pageSize);
         
@@ -71,7 +74,7 @@ class BookController {
             vo.titles = book.titles;
             vo.coverPath = book.coverPath;
             vo.tags = tagDao.toTexts(book.tags);
-            vo.favor = defaultIfNull(user.favorBooks, emptyMap()).containsKey(book.path);
+            vo.favor = favorBooks.containsKey(book.path);
             vos.add(vo);
         }
         

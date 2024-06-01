@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.index.Term;
@@ -73,7 +74,9 @@ public class User {
     public static class Query {
         public static final Sort CreateTimeAsc = new Sort(new SortField("createTime", SortField.Type.LONG, false));
         
-        public String id;
+        public String id; public String idNot;
+        
+        public Boolean admin;
         
         public Set<String> favorBookPaths;
         
@@ -84,6 +87,9 @@ public class User {
             query.add(new MatchAllDocsQuery(), Occur.MUST);
             
             if(StringUtils.isNotBlank(id)) query.add(new TermQuery(new Term("id", id)), Occur.MUST);
+            if(StringUtils.isNotBlank(idNot)) query.add(new TermQuery(new Term("id", idNot)), Occur.MUST_NOT);
+            
+            if(admin!=null) query.add(IntPoint.newExactQuery("admin", admin?1:0), Occur.MUST);
             
             if(CollectionUtils.isNotEmpty(favorBookPaths)) {
                 for(String favorBookPath: favorBookPaths){

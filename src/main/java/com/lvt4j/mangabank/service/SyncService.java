@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,7 +74,17 @@ public class SyncService{
     @ManagedOperation(description = "全量检查和同步")
     public void full() throws IOException {
         log.info("全量检查和同步开始，book目录：{}", bookFolder.getAbsolutePath());
-        File[] rootFiles = bookFolder.listFiles();
+        syncRootPaths(Collections.emptySet());
+        log.info("全量检查和同步结束");
+    }
+    
+    /**
+     * 同步rootPaths下的book
+     * @param rootPaths 为空则全量同步
+     * @throws IOException
+     */
+    public void syncRootPaths(Set<String> rootPaths) throws IOException {
+        File[] rootFiles = Stream.of(bookFolder.listFiles()).filter(f->rootPaths.isEmpty() || rootPaths.contains(f.getName())).toArray(File[]::new);
         for(int i = 0; i < rootFiles.length; i++){
             File rootFile = rootFiles[i];
             log.info("处理book目录下第{}/{}个：{}", i+1, rootFiles.length, rootFile.getName());
@@ -84,19 +95,14 @@ public class SyncService{
                 log.error("处理book目录下第{}/{}个：{}失败", i+1, rootFiles.length, rootFile.getName(), e);
             }
         }
-        //检查如果本子文件不存在，则删除
-        int pageNo = 1;
-        while(true){
-            List<Book> books = bookDao.search(Book.Query.builder().build(), Book.Query.PathAsc, pageNo++, 1000).getRight();
-            if(books.isEmpty()) break;
-            for(Book book: books){
-                File file = new File(bookFolder, book.path);
-                if(file.exists()) continue;
-                log.info("删除不存在的book：{}", book.path);
-                bookDao.delete(book.path);
-            }
+        //清理rootPath前缀，但path对应文件已不存在的book
+        List<Book> books = bookDao.search(Book.Query.builder().pathPrefixes(rootPaths).build(), null, 1, Integer.MAX_VALUE).getRight();
+        for(Book book: books){
+            File bookFile = new File(bookFolder, book.path);
+            if(bookFile.exists()) continue;
+            log.info("book文件不存在，清理：{}", book.path);
+            bookDao.delete(book.path);
         }
-        log.info("全量检查和同步结束");
     }
     
     public void sync(File file) throws IOException {

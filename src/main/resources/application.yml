@@ -27,7 +27,7 @@ logging:
   file.max-history: 30
   level:
     root: info
-    com.lvt4j.mangabank: debug
+    com.lvt4j.mangabank: info
 
 tmp.dir: tmp
 
