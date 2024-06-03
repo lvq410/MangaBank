@@ -2,6 +2,7 @@ package com.lvt4j.mangabank.po;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -23,6 +24,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.util.BytesRef;
 
 import com.lvt4j.mangabank.MangaBankAPP;
+import com.google.common.collect.ImmutableMap;
 import com.lvt4j.mangabank.LuceneUtils;
 
 import lombok.AllArgsConstructor;
@@ -88,6 +90,14 @@ public class Tag {
         
         public static final Sort CreateTimeAsc = new Sort(new SortField("createTime", SortField.Type.LONG, false));
         public static final Sort TagedCountDescUpdateTimeDesc = new Sort(new SortField("tagedCount", SortField.Type.INT, true), new SortField("updateTime", SortField.Type.LONG, true));
+        
+        public static final Map<String, SortField.Type> SortFieldTypes = ImmutableMap.<String, SortField.Type>builder()
+            .put("id", SortField.Type.INT)
+            .put("tag.keyword", SortField.Type.STRING)
+            .put("tagedCount", SortField.Type.INT)
+            .put("createTime", SortField.Type.LONG)
+            .put("updateTime", SortField.Type.LONG)
+        .build();
         
         public Integer id;
         public Integer idNot;

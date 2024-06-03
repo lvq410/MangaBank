@@ -3,6 +3,7 @@ package com.lvt4j.mangabank.controller.api;
 import static java.util.Collections.emptyMap;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,7 +57,7 @@ class BookController {
     public Object list(
             @SessionAttribute("UserId") String userId,
             @RequestBody Query query) throws Exception {
-        User user = userDao.get(userId);
+        User user = userDao.getByCache(userId);
         if(user==null) throw new ResponseStatusException(UNAUTHORIZED, "未登录");
         Map<String, Date> favorBooks = defaultIfNull(user.favorBooks, emptyMap());
         
@@ -145,14 +147,14 @@ class BookController {
     }
     
     @PostMapping("favor")
-    public boolean toggleFavor(
+    @ResponseStatus(NO_CONTENT)
+    public void toggleFavor(
             @SessionAttribute("UserId") String userId,
             @RequestParam String path,
             @RequestParam boolean favor) throws Exception{
         if(userDao.toggleBookFavor(userId, path, favor)) {
             dao.correctFavor(ImmutableSet.of(path));
         }
-        return true;
     }
     
 }

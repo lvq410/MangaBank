@@ -23,6 +23,8 @@ import com.lvt4j.mangabank.SpringMVCConfig;
 import com.lvt4j.mangabank.dao.UserDao;
 import com.lvt4j.mangabank.po.User;
 
+import lombok.SneakyThrows;
+
 /**
  *
  * @author LV on 2023年11月22日
@@ -42,7 +44,7 @@ public class AdminFilter extends FilterRegistrationBean<AdminFilter> implements 
     
     @Override public AdminFilter getFilter() { return this; }
     
-    @Override
+    @Override @SneakyThrows
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -50,7 +52,7 @@ public class AdminFilter extends FilterRegistrationBean<AdminFilter> implements 
         
         HttpSession session = httpRequest.getSession();
         String userId = (String) session.getAttribute("UserId");
-        User user = userDao.get(userId);
+        User user = userDao.getByCache(userId);
         if(user!=null && user.admin) {
             chain.doFilter(httpRequest, httpResponse);
             return;

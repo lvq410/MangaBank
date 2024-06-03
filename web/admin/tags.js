@@ -1,4 +1,6 @@
 $(function(){
+    widget_sortFields_init();
+    widget_sortabler_init();
     widget_pager_init();
     loadTag();
 });

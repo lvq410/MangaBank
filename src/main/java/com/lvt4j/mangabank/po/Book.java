@@ -3,6 +3,7 @@ package com.lvt4j.mangabank.po;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +16,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 
 import com.lvt4j.mangabank.MangaBankAPP;
+import com.google.common.collect.ImmutableMap;
 import com.lvt4j.mangabank.LuceneUtils;
 
 import org.apache.lucene.search.BooleanQuery;
@@ -130,6 +132,15 @@ public class Book {
         public static final Sort PathAsc = new Sort(new SortField("path", SortField.Type.STRING, false));
         
         public static final Sort FavorDescUpdateDesc = new Sort(new SortField("favor", SortField.Type.INT, true), new SortField("updateTime", SortField.Type.LONG, true));
+        
+        public static final Map<String, SortField.Type> SortFieldTypes = ImmutableMap.<String, SortField.Type>builder()
+            .put("sequenceInParent", SortField.Type.INT)
+            .put("path", SortField.Type.STRING)
+            .put("favor", SortField.Type.INT)
+            .put("createTime", SortField.Type.LONG)
+            .put("updateTime", SortField.Type.LONG)
+            .put("tags.size", SortField.Type.INT)
+        .build();
         
         public String path;
         public String pathPrefix; public Collection<String> pathPrefixes;

@@ -108,6 +108,98 @@ jQuery.fn.pagerCount = function (count) {
 }
 
 /**
+ * 多列排序选择器初始化：某些时候，需要自定义查询结果的排序<br>
+ * 必须是div元素,以属性widget="sortFields"标识<br>
+ * 必须的html属性:<br>
+ * ⊙fields:列名+文案组成的数组，如：['field1', '列1', 'field2', '列2']<br>
+ * 可选的html属性:<br>
+ * ⊙header:展示表头横条名，默认'结果排序'
+ * ⊙defSort:默认排序，为列名+表示正序或倒序的true/false组成的数组，如:['field1',true, 'field2', false]<br>
+ */
+function widget_sortFields_init() {
+    $('div[widget=sortFields]').each(function () {
+        var widget = $(this);
+        if (widget.data('widget-init')) return;
+        var fields = Tjson(widget.attr('fields')) || [];
+        widget.html('<table class="table table-striped table-bordered table-hover table-condensed" style="margin-bottom:10px">' +
+            '<thead><tr><td colspan="100">' + (widget.attr('header') || '结果排序') + '</td></tr>' +
+            '<tr><td style="width:17px;"></td>' +
+            '<td>列名</td>' +
+            '<td style="width:70px">正序/倒序</td>' +
+            '<td style="width:26px;padding:0"><button type="button" class="btn btn-info btn-minier btn-block" style="height:28px;">+</button></td>' +
+            '</tr></thead>' +
+            '<tbody id="sortFieldTbody" widget="sortabler" sortable-handle=".sortabler-handler"></tbody>' +
+            '</table>');
+        var tpl_sortField = $tpl(function (fields, selectedField, ascOrDesc) {
+            /*<tr name data-type="obj">
+                <td class="sortabler-handler"><i class="ace-icon fa fa-arrows-v"></i></td>
+                <td style="padding:0"><select name="field" style="width:100%;border:none;">*/
+            for (var i = 0; i < fields.length; i++) {
+                var field = fields[i++];
+                var fieldName = fields[i];
+                /*<option value="{Tigh(field)}" {field==selectedField?'selected':''}>{Tigh(fieldName)}</option>*/
+            }
+            /*</select></td>
+            <td style="padding:0"><select name="ascOrDesc" style="width:100%;border:none;">
+                <option value="false" {ascOrDesc?'':'selected'}>倒序</option>
+                <option value="true" {ascOrDesc?'selected':''}>正序</option></select></td>
+            <td style="width:26px;padding:0"><button onclick="$(this).closest('tr').remove()" type="button" class="btn btn-danger btn-minier btn-block" style="height:30px;">-</button></td>
+        </tr>*/
+        });
+        var tbody = widget.find('tbody');
+        widget.find('button').click(function () {
+            var trLength = $("#sortFieldTbody").find("tr").length;
+            var fieldLenght = fields.length / 2;
+            if (trLength && (trLength >= fieldLenght)) return alert("没有更多可供排序的字段！");
+            tbody.append(tpl_sortField(fields));
+        });
+        this.reset = function () {
+            tbody.empty();
+            var defSort = Tjson(widget.attr('defSort')) || [];
+            if (!defSort) return;
+            for (var i = 0; i < defSort.length; i++) {
+                var field = defSort[i++];
+                var ascOrDesc = defSort[i];
+                tbody.append(tpl_sortField(fields, field, ascOrDesc));
+            }
+        };
+        this.reset();
+    });
+}
+
+/**
+ * sortabler可排序<br>
+ * 以属性widget="sortabler"标识<br>
+ * 可配置的html属性:<br>
+ * sortable-connect-with:可互相接收的sortabler<br>
+ * sortable-handle:控制排序的元素<br>
+ * sortable-items:参与排序的子元素<br>
+ * sortable-cancel:不参与排序的子元素<br>
+ * sortable-onreceive:加入元素后的触发函数<br>
+ */
+function widget_sortabler_init() {
+    $('[widget="sortabler"]').each(function () {
+        var widget = $(this);
+        if (widget.data('widget-init')) return;
+        widget.data('widget-init', true);
+        var option = {};
+        var connectWith = $(this).attr('sortable-connect-with');
+        if (connectWith != null) option.connectWith = connectWith;
+        var handle = $(this).attr('sortable-handle');
+        if (handle != null) option.handle = handle;
+        var items = $(this).attr('sortable-items');
+        if (items != null) option.items = items;
+        var cancel = $(this).attr('sortable-cancel');
+        if (cancel != null) option.cancel = cancel;
+        var onreceive = $(this).attr('sortable-onreceive');
+        if (onreceive) option.receive = function () {
+            eval(onreceive);
+        };
+        $(this).sortable(option);
+    });
+}
+
+/**
  * 标签选择器<br>
  * 必须是select元素,以属性widget="tag-select"标识
  */

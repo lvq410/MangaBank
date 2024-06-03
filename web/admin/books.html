@@ -111,6 +111,7 @@
                     <input name="titlePhrase" type="text" class="form-control">
                 </div>
             </div>
+            <div class="col-xs-12" style="min-height:10px"></div>
             <div class="col-xs-12">
                 <div class="input-group">
                     <span class="input-group-addon">标签都包含</span>
@@ -118,7 +119,19 @@
                 </div>
             </div>
             <div class="col-xs-12" style="min-height:10px"></div>
-            <div class="col-xs-3 col-xs-offset-9">
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon">标签数量</span>
+                    <input name="tagSizeFloor" data-type="int" type="number" class="form-control">
+                    <span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                    <input name="tagSizeCeil" data-type="int" type="number" class="form-control">
+                </div>
+            </div>
+            <div class="col-xs-12" style="min-height:10px"></div>
+            <div class="col-xs-6">
+                <div name="sorts" data-type="arr" widget="sortFields" fields="['path','文件路径','createTime','创建时间','updateTime','文件修改时间','favor','收藏数','tags.size','标签数']", defSort="['path',true]"></div>
+            </div>
+            <div class="col-xs-3 col-xs-offset-3">
                 <button onclick="$('#pager').pagerPageNo(1);loadBook()" type="button" class="btn btn-sm btn-info btn-block">查询</button>
             </div>
             <div class="col-xs-12">

@@ -8,8 +8,13 @@ if(!path){
 
 var Book;
 
-rget('login', null, null, function(isLogin){
-    if(isLogin){
+rget('login', null, null, function(user){
+    if(user){
+        if(user.admin){
+            $('#toEditA').attr('href', 'admin/book.html?path='+encodeURIComponent(path));
+        }else{
+            $('#toEditA').closest('li').remove();
+        }
         rget('book', {path:path}, null, function(book){
             if(!book){
                 alert('本子不存在！')

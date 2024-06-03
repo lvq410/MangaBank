@@ -1,4 +1,6 @@
 $(function(){
+    widget_sortFields_init();
+    widget_sortabler_init();
     widget_pager_init();
     widget_tagSelect_init();
     loadBook();
@@ -7,6 +9,10 @@ $(function(){
 
 function loadBook(){
     var query = $('#queryDiv').formData()||{};
+    var pager = $('#pager').pagerSerialize();
+    query.pageNo = pager.pageNo;
+    query.pageSize = pager.pageSize;
+    
     rpost('book/list', $('#pager').pagerSerialize(), query, function(data){
         $('#pager').pagerCount(data.total);
         $('#booksTbl').html(tpl_books(data.list));
