@@ -17,6 +17,8 @@
 ## docker
 1. 镜像为 `lvq410/manga-bank:{version}` [hub.docker](https://hub.docker.com/r/lvq410/manga-bank)
 1. 可参考[Release](https://github.com/lvq410/MangaBank/releases)包里的config/application.yml配置文件，通过调整环境变量来调整配置
+1. 若有需要，可以将漫画库文件目录作为卷，挂载至配置`book.dir`所指向的文件夹上
+1. 容器内已安装webp，因此无需调整配置`cwebp.path`
 
 # 初始化
 

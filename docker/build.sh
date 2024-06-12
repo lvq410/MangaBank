@@ -27,4 +27,4 @@ cd ./build/docker
 #打镜像
 docker build -t lvq410/manga-bank:$tag . 
 #推镜像
-#docker push lvq410/manga-bank:$tag
+docker push lvq410/manga-bank:$tag
