@@ -96,3 +96,28 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-web'
     api 'org.springframework.boot:spring-boot-starter-actuator'
 }
+tasks.register('release', Zip) {
+    delete "$buildDir/release"
+    
+    copy {
+        from "$projectDir/src/main/resources/application.yml"
+        into "$buildDir/release/config"
+    }
+    
+    doFirst {
+        copy {
+            from "$projectDir/start.sh"
+            from "$projectDir/stop.sh"
+            from "$projectDir/restart.sh"
+            from "$buildDir/libs/MangaBank.jar"
+            into "$buildDir/release"
+        }
+    }
+    
+    from "$buildDir/release"
+    include "*.sh","MangaBank.jar","config/application.yml"
+    baseName "release"
+    destinationDir file("$buildDir/release")
+    
+    dependsOn bootJar
+}

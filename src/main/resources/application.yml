@@ -1,5 +1,9 @@
+#服务端口
 server.port: 8080
+
+#服务运行于反向代理后，且用context-path作为流量区分时，增加此配置
 #server.servlet.context-path: /comicbank
+
 management:
   server.port: 8081
   endpoints:
@@ -29,13 +33,20 @@ logging:
     root: info
     com.lvt4j.mangabank: info
 
+#cwebp命令的路径
+cwebp.path: cwebp
+
+#临时文件夹路径
 tmp.dir: tmp
 
+#数据文件夹路径
 data.dir: data
 
+#存放漫画的文件夹
 book.dir: ${data.dir}/book
-meta.dir: ${data.dir}/meta
 
+#本程序存放各种元数据的文件夹
+meta.dir: ${data.dir}/meta
 lucene.id.dir: ${meta.dir}/id
 lucene.book.dir: ${meta.dir}/book
 lucene.user.dir: ${meta.dir}/user
