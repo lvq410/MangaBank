@@ -1,5 +1,6 @@
 package com.lvt4j.mangabank.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,15 +12,15 @@ public class NumberPathTest{
     @Test
     public void nodeParseNumersTest(){
         String name = "vol 2-1.zip";
-        int[] numbers = NumberPath.Node.parseNumbers(name);
+        BigDecimal[] numbers = NumberPath.Node.parseNumbers(name);
         assert numbers.length==2;
-        assert numbers[0]==2;
-        assert numbers[1]==1;
+        assert numbers[0].intValue()==2;
+        assert numbers[1].intValue()==1;
         
         name = "vol 2.zip";
         numbers = NumberPath.Node.parseNumbers(name);
         assert numbers.length==1;
-        assert numbers[0]==2;
+        assert numbers[0].intValue()==2;
         
         name = "vol.zip";
         numbers = NumberPath.Node.parseNumbers(name);
@@ -28,17 +29,17 @@ public class NumberPathTest{
     
     @Test
     public void intsComparatorTest(){
-        int[] a = new int[]{2,1};
-        int[] b = new int[]{2,2};
-        int compare = NumberPath.IntsComparator.compare(a, b);
+        BigDecimal[] a = new BigDecimal[]{BigDecimal.valueOf(2),BigDecimal.valueOf(1)};
+        BigDecimal[] b = new BigDecimal[]{BigDecimal.valueOf(2),BigDecimal.valueOf(2)};
+        int compare = NumberPath.NumbersComparator.compare(a, b);
         assert compare<0;
         
-        int[] c = new int[]{3};
-        compare = NumberPath.IntsComparator.compare(c, a);
+        BigDecimal[] c = new BigDecimal[]{BigDecimal.valueOf(3)};
+        compare = NumberPath.NumbersComparator.compare(c, a);
         assert compare>0;
         
-        int[] d = new int[]{3,1};
-        compare = NumberPath.IntsComparator.compare(d, c);
+        BigDecimal[] d = new BigDecimal[]{BigDecimal.valueOf(3),BigDecimal.valueOf(1)};
+        compare = NumberPath.NumbersComparator.compare(d, c);
         assert compare>0;
     }
     

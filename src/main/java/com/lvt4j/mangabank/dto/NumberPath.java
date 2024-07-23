@@ -1,6 +1,7 @@
 package com.lvt4j.mangabank.dto;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -60,7 +61,7 @@ public class NumberPath implements Comparable<NumberPath>{
          * 路径名中提取的数字部分，如果没有数字，则为null
          * 路径名可能是由多个数字部分组成的，比如 "vol 2-1.zip"，则会被解析为 [2,1]
          */
-        final int[] numbers;
+        final BigDecimal[] numbers;
         
         public Node(String name){
             super();
@@ -68,21 +69,21 @@ public class NumberPath implements Comparable<NumberPath>{
             this.numbers = parseNumbers(name);
         }
         
-        static int[] parseNumbers(String name){
+        static BigDecimal[] parseNumbers(String name){
             if(name == null) return null;
             Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(name);
-            List<Integer> numbers = new ArrayList<>();
+            List<BigDecimal> numbers = new ArrayList<>();
             while (matcher.find()) {
-                numbers.add(Integer.parseInt(matcher.group()));
+                numbers.add(new BigDecimal(matcher.group()));
             }
             if(numbers.isEmpty()) return null;
-            return numbers.stream().mapToInt(Integer::intValue).toArray();
+            return numbers.toArray(new BigDecimal[0]);
         }
         
         @Override
         public int compareTo(Node n){
-            if(numbers != null && n.numbers!=null) return IntsComparator.compare(numbers, n.numbers);
+            if(numbers != null && n.numbers!=null) return NumbersComparator.compare(numbers, n.numbers);
             if(numbers != null) return -1;
             if(n.numbers != null) return 1;
             return name.compareTo(n.name);
@@ -106,9 +107,9 @@ public class NumberPath implements Comparable<NumberPath>{
      * [3,1]
      * 对比时，[3]应在[2,1]与[2,2]之后，[2,2]应在[2,1]之后，[3,1]应在[3]之后
      */
-    static final Comparator<int[]> IntsComparator = (a, b)->{
+    static final Comparator<BigDecimal[]> NumbersComparator = (a, b)->{
         for(int i = 0; i < Math.min(a.length, b.length); i++){
-            if(a[i] != b[i]) return a[i] - b[i];
+            if(a[i] != b[i]) return a[i].compareTo(b[i]);
         }
         return a.length - b.length;
     };
